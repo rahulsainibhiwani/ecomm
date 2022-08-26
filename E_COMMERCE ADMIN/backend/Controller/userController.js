@@ -1,12 +1,14 @@
 import User from '../Model/User.js'
 import uploader from "../Config/cloudConfig.js";
+import bcrypt from 'bcrypt'
 
 const createUser = async (req, res) => {
     let file = await uploader.uploader.upload(req.file.path);
     let fileURL = file.secure_url;
+    let hash = await bcrypt.hash(req.body.password, 10)
     // console.log(fileURL, req.body)
     try {
-        let result = await User.create({ ...req.body, image: fileURL });
+        let result = await User.create({ ...req.body, password: hash, image: fileURL });
         res.status(201).send({ status: "Created", result })
     } catch (error) {
         res.status(400).send(error.message)

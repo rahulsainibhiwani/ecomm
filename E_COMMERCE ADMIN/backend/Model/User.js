@@ -12,8 +12,10 @@ const Address = new mongoose.Schema({
 const User = new mongoose.Schema({
     name: { type: String, require: true },
     email: { type: String, require: true, unique: true },
-    image: { type: String, require: true },
+    password: { type: String, require: true },
+    image: { type: String },
     admin: { type: Boolean, default: false },
+    address: [Address]
 })
 
 export default new mongoose.model('users', User)
